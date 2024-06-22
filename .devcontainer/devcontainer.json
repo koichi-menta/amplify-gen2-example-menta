@@ -1,0 +1,21 @@
+{
+  "name": "Existing Dockerfile",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "forwardPorts": [3000],
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "editor.formatOnSave": true
+      },
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "mhutchie.git-graph",
+        "PKief.material-icon-theme",
+        "eamodio.gitlens"
+      ]
+    }
+  }
+}
