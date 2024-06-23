@@ -5,6 +5,8 @@ import type { Schema } from "@/amplify/data/resource";
 import { Amplify } from "aws-amplify";
 import outputs from "@/amplify_outputs.json";
 import { useEffect, useState } from "react";
+import { Authenticator } from "@aws-amplify/ui-react";
+import "@aws-amplify/ui-react/styles.css";
 
 Amplify.configure(outputs);
 
@@ -85,31 +87,43 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24 gap-5">
-      <div className="flex gap-1">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        />
-        <button
-          onClick={handleCreate}
-          className="border-[1px] border-gray-500 px-2 "
-        >
-          登録
-        </button>
-      </div>
-      {todos.map((todo) => {
-        return (
-          <div key={todo.id}>
-            <TodoForm
-              todo={todo}
-              handleUpdate={(content) => handleUpdate(todo.id, content)}
-              handleDelete={() => handleDelete(todo.id)}
+    <Authenticator>
+      {({ signOut, user }) => (
+        <main className="flex min-h-screen flex-col items-center justify-center p-24 gap-5">
+          <h1>Hello {user?.username}</h1>
+          <div className="flex gap-1">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
             />
+            <button
+              onClick={handleCreate}
+              className="border-[1px] border-gray-500 px-2"
+            >
+              登録
+            </button>
           </div>
-        );
-      })}
-    </main>
+          {todos.map((todo) => {
+            return (
+              <div key={todo.id}>
+                <TodoForm
+                  todo={todo}
+                  handleUpdate={(content) => handleUpdate(todo.id, content)}
+                  handleDelete={() => handleDelete(todo.id)}
+                />
+              </div>
+            );
+          })}
+
+          <button
+            onClick={signOut}
+            className="w-[100px] border-[1px] border-gray-500 px-2"
+          >
+            Sign out
+          </button>
+        </main>
+      )}
+    </Authenticator>
   );
 }
